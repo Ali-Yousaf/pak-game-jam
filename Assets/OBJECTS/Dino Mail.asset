@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3523c0317c91952429fbcc3d02fd20e6, type: 3}
+  m_Name: Dino Mail
+  m_EditorClassIdentifier: Assembly-CSharp::AppData
+  appName: Dino Mail
+  appIcon: {fileID: 1196659882415220177, guid: 9671263b328349341bf1e487fc85a323, type: 3}
+  windowPrefab: {fileID: 7645212647265333583, guid: 9341742d3a80507448e678e161484f90, type: 3}
