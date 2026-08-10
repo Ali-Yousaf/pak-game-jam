@@ -15,6 +15,10 @@ public class DesktopManager : MonoBehaviour
     [Header("Window Animation")]
     [SerializeField] private float openAnimationDuration = 0.2f;
 
+    [Header("Window Spawn Random Position")]
+    [SerializeField] private float randomX = 150f;
+    [SerializeField] private float randomY = 80f;
+
     private Dictionary<AppData, GameObject> openWindows =
         new Dictionary<AppData, GameObject>();
 
@@ -59,6 +63,16 @@ public class DesktopManager : MonoBehaviour
             appData.windowPrefab,
             windowContainer
         );
+
+        RectTransform windowRect = window.GetComponent<RectTransform>();
+
+        if (windowRect != null)
+        {
+            float x = Random.Range(-randomX, randomX);
+            float y = Random.Range(-randomY, randomY);
+
+            windowRect.anchoredPosition = new Vector2(x, y);
+        }
 
         // Initialize AppWindow.
         AppWindow appWindowComponent =

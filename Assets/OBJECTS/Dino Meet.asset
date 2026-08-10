@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3523c0317c91952429fbcc3d02fd20e6, type: 3}
+  m_Name: Dino Meet
+  m_EditorClassIdentifier: Assembly-CSharp::AppData
+  appName: Dino Meet
+  appIcon: {fileID: -4566190091907096745, guid: 97d5047ce6ee8fd49b4be345136cd24c, type: 3}
+  windowPrefab: {fileID: 7645212647265333583, guid: 104648abbc259894fa371e7fa051d313, type: 3}
