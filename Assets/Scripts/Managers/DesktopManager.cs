@@ -5,8 +5,6 @@ using DG.Tweening;
 
 public class DesktopManager : MonoBehaviour
 {
-    public static DesktopManager Instance;
-
     [Header("Containers")]
     [SerializeField] private Transform windowContainer;
     [SerializeField] private Transform taskbarContainer;
@@ -20,14 +18,6 @@ public class DesktopManager : MonoBehaviour
     private Dictionary<AppData, GameObject> taskbarButtons =
         new Dictionary<AppData, GameObject>();
 
-    void Awake()
-    {
-        if(Instance == null)
-            Instance = this;
-
-        else
-            Destroy(gameObject);
-    }
 
     public void OpenApp(AppData appData)
     {
@@ -37,13 +27,23 @@ public class DesktopManager : MonoBehaviour
             return;
         }
 
-        // If the app is already open, bring it to the front.
+        // If the app is already open.
         if (openWindows.ContainsKey(appData))
         {
             GameObject existingWindow = openWindows[appData];
 
             if (existingWindow != null)
             {
+                AppWindow appWindow =
+                    existingWindow.GetComponent<AppWindow>();
+
+                // Restore if minimized.
+                if (appWindow != null)
+                {
+                    appWindow.RestoreWindow();
+                }
+
+                // Bring the window to the front.
                 BringToFront(existingWindow);
             }
 
@@ -56,12 +56,21 @@ public class DesktopManager : MonoBehaviour
             windowContainer
         );
 
+        // Initialize AppWindow.
+        AppWindow appWindowComponent =
+            window.GetComponent<AppWindow>();
+
+        if (appWindowComponent != null)
+        {
+            appWindowComponent.Initialize(appData);
+        }
+
         openWindows.Add(appData, window);
 
-        // Create the taskbar button.
+        // Create taskbar button.
         CreateTaskbarButton(appData, window);
 
-        // Bring the window to the front.
+        // Bring window to front.
         BringToFront(window);
 
         // Play opening animation.
@@ -69,7 +78,9 @@ public class DesktopManager : MonoBehaviour
     }
 
 
-    private void CreateTaskbarButton(AppData appData, GameObject window)
+    private void CreateTaskbarButton(
+        AppData appData,
+        GameObject window)
     {
         if (taskbarButtons.ContainsKey(appData))
             return;
@@ -81,25 +92,37 @@ public class DesktopManager : MonoBehaviour
 
         taskbarButtons.Add(appData, buttonObject);
 
-        // Set taskbar icon.
-        Image icon = buttonObject.GetComponentInChildren<Image>();
+        // Set the taskbar icon.
+        Image icon =
+            buttonObject.GetComponentInChildren<Image>();
 
         if (icon != null)
         {
             icon.sprite = appData.appIcon;
         }
 
-        // Make taskbar button focus the window.
-        Button button = buttonObject.GetComponent<Button>();
+        // Taskbar button functionality.
+        Button button =
+            buttonObject.GetComponent<Button>();
 
         if (button != null)
         {
             button.onClick.AddListener(() =>
             {
-                if (window != null)
+                if (window == null)
+                    return;
+
+                AppWindow appWindow =
+                    window.GetComponent<AppWindow>();
+
+                // Restore if minimized.
+                if (appWindow != null)
                 {
-                    BringToFront(window);
+                    appWindow.RestoreWindow();
                 }
+
+                // Bring to front.
+                BringToFront(window);
             });
         }
     }
@@ -110,10 +133,11 @@ public class DesktopManager : MonoBehaviour
         if (appData == null)
             return;
 
-        // Close window.
+        // Destroy the window.
         if (openWindows.ContainsKey(appData))
         {
-            GameObject window = openWindows[appData];
+            GameObject window =
+                openWindows[appData];
 
             if (window != null)
             {
@@ -123,10 +147,11 @@ public class DesktopManager : MonoBehaviour
             openWindows.Remove(appData);
         }
 
-        // Remove taskbar button.
+        // Destroy the taskbar button.
         if (taskbarButtons.ContainsKey(appData))
         {
-            GameObject taskbarButton = taskbarButtons[appData];
+            GameObject taskbarButton =
+                taskbarButtons[appData];
 
             if (taskbarButton != null)
             {
@@ -149,34 +174,43 @@ public class DesktopManager : MonoBehaviour
 
     private void AnimateWindowOpen(GameObject window)
     {
-        RectTransform rect = window.GetComponent<RectTransform>();
+        if (window == null)
+            return;
+
+        RectTransform rect =
+            window.GetComponent<RectTransform>();
 
         if (rect == null)
             return;
 
-        // Start slightly smaller.
-        rect.localScale = Vector3.one * 0.85f;
-
-        // Get or create CanvasGroup.
         CanvasGroup canvasGroup =
             window.GetComponent<CanvasGroup>();
 
         if (canvasGroup == null)
         {
-            canvasGroup = window.AddComponent<CanvasGroup>();
+            canvasGroup =
+                window.AddComponent<CanvasGroup>();
         }
 
+        // Starting state.
+        rect.localScale = Vector3.one * 0.85f;
         canvasGroup.alpha = 0f;
 
-        // Kill any previous tweens.
+        // Kill any existing tweens.
         rect.DOKill();
         canvasGroup.DOKill();
 
         // Scale animation.
-        rect.DOScale(Vector3.one, 0.2f)
-            .SetEase(Ease.OutBack);
+        rect.DOScale(
+            Vector3.one,
+            0.2f
+        )
+        .SetEase(Ease.OutBack);
 
         // Fade animation.
-        canvasGroup.DOFade(1f, 0.15f);
+        canvasGroup.DOFade(
+            1f,
+            0.15f
+        );
     }
 }
