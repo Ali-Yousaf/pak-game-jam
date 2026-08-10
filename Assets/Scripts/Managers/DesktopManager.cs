@@ -12,6 +12,9 @@ public class DesktopManager : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private GameObject taskbarButtonPrefab;
 
+    [Header("Window Animation")]
+    [SerializeField] private float openAnimationDuration = 0.2f;
+
     private Dictionary<AppData, GameObject> openWindows =
         new Dictionary<AppData, GameObject>();
 
@@ -19,6 +22,7 @@ public class DesktopManager : MonoBehaviour
         new Dictionary<AppData, GameObject>();
 
 
+    // Called by an app icon on the desktop.
     public void OpenApp(AppData appData)
     {
         if (appData == null)
@@ -27,7 +31,7 @@ public class DesktopManager : MonoBehaviour
             return;
         }
 
-        // If the app is already open.
+        // Check if the app is already open.
         if (openWindows.ContainsKey(appData))
         {
             GameObject existingWindow = openWindows[appData];
@@ -37,14 +41,14 @@ public class DesktopManager : MonoBehaviour
                 AppWindow appWindow =
                     existingWindow.GetComponent<AppWindow>();
 
-                // Restore if minimized.
-                if (appWindow != null)
+                // If minimized, restore it.
+                if (appWindow != null &&
+                    appWindow.IsMinimized())
                 {
                     appWindow.RestoreWindow();
                 }
 
-                // Bring the window to the front.
-                BringToFront(existingWindow);
+                BringWindowToFront(existingWindow);
             }
 
             return;
@@ -67,11 +71,14 @@ public class DesktopManager : MonoBehaviour
 
         openWindows.Add(appData, window);
 
-        // Create taskbar button.
-        CreateTaskbarButton(appData, window);
+        // Create the taskbar button.
+        CreateTaskbarButton(
+            appData,
+            window
+        );
 
         // Bring window to front.
-        BringToFront(window);
+        BringWindowToFront(window);
 
         // Play opening animation.
         AnimateWindowOpen(window);
@@ -90,9 +97,12 @@ public class DesktopManager : MonoBehaviour
             taskbarContainer
         );
 
-        taskbarButtons.Add(appData, buttonObject);
+        taskbarButtons.Add(
+            appData,
+            buttonObject
+        );
 
-        // Set the taskbar icon.
+        // Find the icon inside the taskbar button.
         Image icon =
             buttonObject.GetComponentInChildren<Image>();
 
@@ -101,7 +111,7 @@ public class DesktopManager : MonoBehaviour
             icon.sprite = appData.appIcon;
         }
 
-        // Taskbar button functionality.
+        // Get button component.
         Button button =
             buttonObject.GetComponent<Button>();
 
@@ -109,22 +119,40 @@ public class DesktopManager : MonoBehaviour
         {
             button.onClick.AddListener(() =>
             {
-                if (window == null)
-                    return;
-
-                AppWindow appWindow =
-                    window.GetComponent<AppWindow>();
-
-                // Restore if minimized.
-                if (appWindow != null)
-                {
-                    appWindow.RestoreWindow();
-                }
-
-                // Bring to front.
-                BringToFront(window);
+                HandleTaskbarClick(
+                    appData,
+                    window
+                );
             });
         }
+    }
+
+
+    private void HandleTaskbarClick(
+        AppData appData,
+        GameObject window)
+    {
+        if (window == null)
+            return;
+
+        AppWindow appWindow =
+            window.GetComponent<AppWindow>();
+
+        if (appWindow == null)
+            return;
+
+        // If minimized → restore.
+        if (appWindow.IsMinimized())
+        {
+            appWindow.RestoreWindow();
+
+            BringWindowToFront(window);
+
+            return;
+        }
+
+        // If currently visible → minimize.
+        appWindow.MinimizeWindow();
     }
 
 
@@ -133,7 +161,7 @@ public class DesktopManager : MonoBehaviour
         if (appData == null)
             return;
 
-        // Destroy the window.
+        // Remove window.
         if (openWindows.ContainsKey(appData))
         {
             GameObject window =
@@ -141,13 +169,23 @@ public class DesktopManager : MonoBehaviour
 
             if (window != null)
             {
+                window.transform.DOKill();
+
+                CanvasGroup canvasGroup =
+                    window.GetComponent<CanvasGroup>();
+
+                if (canvasGroup != null)
+                {
+                    canvasGroup.DOKill();
+                }
+
                 Destroy(window);
             }
 
             openWindows.Remove(appData);
         }
 
-        // Destroy the taskbar button.
+        // Remove taskbar button.
         if (taskbarButtons.ContainsKey(appData))
         {
             GameObject taskbarButton =
@@ -163,7 +201,7 @@ public class DesktopManager : MonoBehaviour
     }
 
 
-    private void BringToFront(GameObject window)
+    public void BringWindowToFront(GameObject window)
     {
         if (window == null)
             return;
@@ -196,21 +234,23 @@ public class DesktopManager : MonoBehaviour
         rect.localScale = Vector3.one * 0.85f;
         canvasGroup.alpha = 0f;
 
-        // Kill any existing tweens.
+        // Kill existing tweens.
         rect.DOKill();
         canvasGroup.DOKill();
 
-        // Scale animation.
-        rect.DOScale(
-            Vector3.one,
-            0.2f
-        )
-        .SetEase(Ease.OutBack);
+        // Scale pop.
+        rect
+            .DOScale(
+                Vector3.one,
+                openAnimationDuration
+            )
+            .SetEase(Ease.OutBack);
 
-        // Fade animation.
-        canvasGroup.DOFade(
-            1f,
-            0.15f
-        );
+        // Fade in.
+        canvasGroup
+            .DOFade(
+                1f,
+                openAnimationDuration * 0.75f
+            );
     }
 }

@@ -12,13 +12,22 @@ public class AppWindow : MonoBehaviour
     [Header("Window Settings")]
     [SerializeField] private float animationDuration = 0.2f;
 
+    [Header("Maximized Size")]
+    [SerializeField] private float maximizedWidth = 1500f;
+    [SerializeField] private float maximizedHeight = 750f;
+
     private DesktopManager desktopManager;
     private AppData appData;
 
     private RectTransform rectTransform;
+    private CanvasGroup canvasGroup;
 
     private Vector2 originalPosition;
     private Vector2 originalSize;
+
+    private Vector2 originalAnchorMin;
+    private Vector2 originalAnchorMax;
+    private Vector2 originalPivot;
 
     private bool isMaximized = false;
     private bool isMinimized = false;
@@ -28,12 +37,22 @@ public class AppWindow : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
 
-        // Find the DesktopManager automatically.
+        canvasGroup = GetComponent<CanvasGroup>();
+
+        if (canvasGroup == null)
+        {
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
+
         desktopManager = FindFirstObjectByType<DesktopManager>();
 
-        // Store the original window size and position.
+        // Store the original window settings.
         originalPosition = rectTransform.anchoredPosition;
         originalSize = rectTransform.sizeDelta;
+
+        originalAnchorMin = rectTransform.anchorMin;
+        originalAnchorMax = rectTransform.anchorMax;
+        originalPivot = rectTransform.pivot;
 
         // Connect buttons.
         if (closeButton != null)
@@ -48,7 +67,7 @@ public class AppWindow : MonoBehaviour
 
         if (maximizeButton != null)
         {
-            maximizeButton.onClick.AddListener(MaximizeWindow);
+            maximizeButton.onClick.AddListener(ToggleMaximize);
         }
     }
 
@@ -56,6 +75,18 @@ public class AppWindow : MonoBehaviour
     public void Initialize(AppData data)
     {
         appData = data;
+    }
+
+
+    public bool IsMinimized()
+    {
+        return isMinimized;
+    }
+
+
+    public bool IsMaximized()
+    {
+        return isMaximized;
     }
 
 
@@ -72,7 +103,7 @@ public class AppWindow : MonoBehaviour
     }
 
 
-    private void MinimizeWindow()
+    public void MinimizeWindow()
     {
         if (isMinimized)
             return;
@@ -80,8 +111,8 @@ public class AppWindow : MonoBehaviour
         isMinimized = true;
 
         rectTransform.DOKill();
+        canvasGroup.DOKill();
 
-        // Shrink and fade the window.
         Sequence sequence = DOTween.Sequence();
 
         sequence.Join(
@@ -89,8 +120,6 @@ public class AppWindow : MonoBehaviour
                 .DOScale(0.8f, animationDuration)
                 .SetEase(Ease.InBack)
         );
-
-        CanvasGroup canvasGroup = GetCanvasGroup();
 
         sequence.Join(
             canvasGroup
@@ -113,13 +142,11 @@ public class AppWindow : MonoBehaviour
 
         gameObject.SetActive(true);
 
-        CanvasGroup canvasGroup = GetCanvasGroup();
+        rectTransform.DOKill();
+        canvasGroup.DOKill();
 
         rectTransform.localScale = Vector3.one * 0.8f;
         canvasGroup.alpha = 0f;
-
-        rectTransform.DOKill();
-        canvasGroup.DOKill();
 
         rectTransform
             .DOScale(Vector3.one, animationDuration)
@@ -130,59 +157,104 @@ public class AppWindow : MonoBehaviour
     }
 
 
-    private void MaximizeWindow()
+    private void ToggleMaximize()
     {
         if (isMaximized)
         {
             RestoreFromMaximize();
-            return;
         }
+        else
+        {
+            MaximizeWindow();
+        }
+    }
+
+
+    private void MaximizeWindow()
+    {
+        if (isMaximized)
+            return;
 
         isMaximized = true;
 
         rectTransform.DOKill();
 
-        // Save current position and size.
+        // Store current settings before maximizing.
         originalPosition = rectTransform.anchoredPosition;
         originalSize = rectTransform.sizeDelta;
 
-        // Stretch to fill the parent.
+        originalAnchorMin = rectTransform.anchorMin;
+        originalAnchorMax = rectTransform.anchorMax;
+        originalPivot = rectTransform.pivot;
+
+        // Center the pivot.
+        rectTransform.pivot = new Vector2(0.5f, 0.5f);
+
+        // Center the anchors.
+        rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+        rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+
+        // Animate to center.
         rectTransform
             .DOAnchorPos(Vector2.zero, animationDuration)
             .SetEase(Ease.OutQuad);
 
+        // Animate to 1400 x 750.
         rectTransform
-            .DOSizeDelta(Vector2.zero, animationDuration)
+            .DOSizeDelta(
+                new Vector2(
+                    maximizedWidth,
+                    maximizedHeight
+                ),
+                animationDuration
+            )
             .SetEase(Ease.OutQuad);
     }
 
 
     private void RestoreFromMaximize()
     {
+        if (!isMaximized)
+            return;
+
         isMaximized = false;
 
         rectTransform.DOKill();
 
+        // Restore anchors and pivot.
+        rectTransform.anchorMin = originalAnchorMin;
+        rectTransform.anchorMax = originalAnchorMax;
+        rectTransform.pivot = originalPivot;
+
+        // Restore original position.
         rectTransform
-            .DOAnchorPos(originalPosition, animationDuration)
+            .DOAnchorPos(
+                originalPosition,
+                animationDuration
+            )
             .SetEase(Ease.OutQuad);
 
+        // Restore original size.
         rectTransform
-            .DOSizeDelta(originalSize, animationDuration)
+            .DOSizeDelta(
+                originalSize,
+                animationDuration
+            )
             .SetEase(Ease.OutQuad);
     }
 
 
-    private CanvasGroup GetCanvasGroup()
+    public void FocusWindow()
     {
-        CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
-
-        if (canvasGroup == null)
+        if (isMinimized)
         {
-            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            RestoreWindow();
         }
 
-        return canvasGroup;
+        if (desktopManager != null)
+        {
+            desktopManager.BringWindowToFront(gameObject);
+        }
     }
 
 
@@ -200,7 +272,7 @@ public class AppWindow : MonoBehaviour
 
         if (maximizeButton != null)
         {
-            maximizeButton.onClick.RemoveListener(MaximizeWindow);
+            maximizeButton.onClick.RemoveListener(ToggleMaximize);
         }
     }
 }

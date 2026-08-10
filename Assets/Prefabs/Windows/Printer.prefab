@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Dino Mail
+  m_text: Printawr
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -548,7 +548,7 @@ GameObject:
   - component: {fileID: 8967504023661295114}
   - component: {fileID: 9112973848816835110}
   m_Layer: 5
-  m_Name: DinoMail
+  m_Name: Printer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -603,7 +603,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 6552017237811801748, guid: 23af5850612f3c8418449afc7145fc3e, type: 3}
+  m_Sprite: {fileID: 5399148756769801394, guid: 4a888c97dc16fee46a0f056739035a7d, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
