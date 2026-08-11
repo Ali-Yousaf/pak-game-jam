@@ -153,35 +153,21 @@ public class TaskManager : MonoBehaviour
 
         if (availableTasks.Count == 0)
         {
-            Debug.LogWarning(
-                "No TaskData has been assigned to TaskManager."
-            );
-
+            Debug.LogWarning("No TaskData has been assigned to TaskManager.");
             return;
         }
 
-        TaskData selectedTask =
-            availableTasks[
-                Random.Range(
-                    0,
-                    availableTasks.Count
-                )
-            ];
+        TaskData selectedTask = availableTasks[Random.Range(0, availableTasks.Count)];
 
-        RuntimeTask runtimeTask =
-            new RuntimeTask(
-                selectedTask,
-                currentHour,
-                currentMinute
-            );
+        RuntimeTask runtimeTask = new RuntimeTask(selectedTask, currentHour, currentMinute);
 
         activeTasks.Add(runtimeTask);
 
-        IncreaseNotificationCount(
-            selectedTask.taskType
-        );
+        IncreaseNotificationCount(selectedTask.taskType);
 
         UpdateNotificationBadges();
+
+        NotificationPanel.Instance.ShowNotificationPanel(selectedTask.taskTitle, selectedTask.description, selectedTask.taskType.ToString());
 
         Debug.Log(
             "NEW TASK: " +

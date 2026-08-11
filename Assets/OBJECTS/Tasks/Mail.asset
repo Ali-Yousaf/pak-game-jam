@@ -13,12 +13,9 @@ MonoBehaviour:
   m_Name: Mail
   m_EditorClassIdentifier: Assembly-CSharp::TaskData
   taskTitle: Mail 1
-  description: This is a mail
+  description: sahfbasdsadsahdk hsakjdhjakjshdjakshdkahskdh ksahdkhsakjdhsadasd
   taskType: 0
   priority: 1
-  senderName: 
-  department: 
-  additionalInformation: 
   timeLimitMinutes: 10
   productivityReward: 10
   productivityPenalty: 10

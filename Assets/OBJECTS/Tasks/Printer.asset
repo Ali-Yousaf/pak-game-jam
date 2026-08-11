@@ -13,12 +13,9 @@ MonoBehaviour:
   m_Name: Printer
   m_EditorClassIdentifier: Assembly-CSharp::TaskData
   taskTitle: Printer
-  description: Print this
+  description: sahfbasdsadsahdk hsakjdhjakjshdjakshdkahskdh ksahdkhsakjdhsad
   taskType: 2
   priority: 1
-  senderName: 
-  department: 
-  additionalInformation: 
   timeLimitMinutes: 10
   productivityReward: 10
   productivityPenalty: 10

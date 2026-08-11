@@ -13,12 +13,9 @@ MonoBehaviour:
   m_Name: Call
   m_EditorClassIdentifier: Assembly-CSharp::TaskData
   taskTitle: Call
-  description: Call incoming...
+  description: sahfbasdsadsahdk hsakjdhjakjshdjakshdkahskdh ksahdkhsakjdhsad
   taskType: 1
   priority: 1
-  senderName: 
-  department: 
-  additionalInformation: 
   timeLimitMinutes: 10
   productivityReward: 10
   productivityPenalty: 10

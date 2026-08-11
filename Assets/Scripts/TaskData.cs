@@ -32,14 +32,6 @@ public class TaskData : ScriptableObject
 
     public TaskPriority priority = TaskPriority.Normal;
 
-    [Header("Task Details")]
-    public string senderName;
-
-    public string department;
-
-    [TextArea(2, 4)]
-    public string additionalInformation;
-
     [Header("Timing")]
     [Tooltip("How long the player has to complete the task after it appears.")]
     public int timeLimitMinutes = 10;
