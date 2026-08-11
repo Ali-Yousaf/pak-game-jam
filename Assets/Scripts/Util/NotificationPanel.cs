@@ -11,7 +11,6 @@ public class NotificationPanel : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI titleText;
-    [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI taskTypeText;
 
     [Header("Animation")]
@@ -40,15 +39,11 @@ public class NotificationPanel : MonoBehaviour
     }
 
 
-    public void ShowNotificationPanel(
-        string title,
-        string description,
-        string taskType)
+    public void ShowNotificationPanel(string title, string taskType)
     {
         notificationSequence?.Kill();
 
         titleText.text = title;
-        descriptionText.text = description;
         taskTypeText.text = taskType;
 
         panel.gameObject.SetActive(true);
@@ -77,18 +72,5 @@ public class NotificationPanel : MonoBehaviour
         {
             panel.gameObject.SetActive(false);
         });
-    }
-
-
-    public void ShowNotificationPanel(TaskData task)
-    {
-        if (task == null)
-            return;
-
-        ShowNotificationPanel(
-            task.taskTitle,
-            task.description,
-            task.taskType.ToString()
-        );
     }
 }

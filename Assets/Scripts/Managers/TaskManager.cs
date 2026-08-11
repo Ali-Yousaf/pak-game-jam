@@ -156,7 +156,7 @@ public class TaskManager : MonoBehaviour
 
         UpdateNotificationBadges();
 
-        NotificationPanel.Instance.ShowNotificationPanel(selectedTask.taskTitle, selectedTask.description, selectedTask.taskType.ToString());
+        NotificationPanel.Instance.ShowNotificationPanel(selectedTask.taskTitle, selectedTask.taskType.ToString());
 
         Debug.Log(
             "NEW TASK: " +
