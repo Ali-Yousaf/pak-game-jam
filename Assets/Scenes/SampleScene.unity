@@ -1690,10 +1690,8 @@ MonoBehaviour:
   emailTasks:
   - {fileID: 11400000, guid: bc20b1989297e56418701c0edd00d8e7, type: 2}
   - {fileID: 11400000, guid: eb60ed0157f276740a6c5f4455b91fb5, type: 2}
-  callTasks:
-  - {fileID: 11400000, guid: 95f2aa2dc8514f74c8c789ecee8aa50f, type: 2}
-  printTasks:
-  - {fileID: 11400000, guid: e5f593e6fa0fbc542ae6871d719187ff, type: 2}
+  callTasks: []
+  printTasks: []
   meetingTasks: []
   minimumDelayMinutes: 3
   maximumDelayMinutes: 4

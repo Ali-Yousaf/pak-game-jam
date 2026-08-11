@@ -40,8 +40,7 @@ public class RuntimeTask
             0
         );
 
-        DateTime deadline =
-            spawnTime.AddMinutes(taskData.timeLimitMinutes);
+        DateTime deadline = spawnTime.AddMinutes(taskData.timeLimitMinutes);
 
         deadlineHour = deadline.Hour;
         deadlineMinute = deadline.Minute;

@@ -4,6 +4,8 @@ using TMPro;
 
 public class TaskManager : MonoBehaviour
 {
+    public static TaskManager Instance;
+   
     [System.Serializable]
     public class NotificationBadge
     {
@@ -66,6 +68,14 @@ public class TaskManager : MonoBehaviour
     private bool workDayStarted;
     private bool workDayFinished;
 
+    void Awake()
+    {
+        if(Instance == null)
+            Instance = this;
+        
+        else
+            Destroy(gameObject);
+    }
 
     private void Start()
     {

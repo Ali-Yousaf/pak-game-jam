@@ -49,4 +49,12 @@ public class TaskData : ScriptableObject
     public bool isUrgent;
 
     public bool canExpire = true;
+
+    [Header("Mail")]
+    public string senderName;
+    public string senderEmail;
+    public string subject;
+
+    [TextArea(5, 10)]
+    public string mailBody;
 }

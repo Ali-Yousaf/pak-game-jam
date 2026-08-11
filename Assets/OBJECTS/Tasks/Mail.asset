@@ -13,13 +13,17 @@ MonoBehaviour:
   m_Name: Mail
   m_EditorClassIdentifier: Assembly-CSharp::TaskData
   taskTitle: Mail 1
-  description: sahfbasdsadsahdk hsakjdhjakjshdjakshdkahskdh ksahdkhsakjdhsadasd
+  description: 
   taskType: 0
   priority: 1
-  timeLimitMinutes: 10
+  timeLimitMinutes: 360
   productivityReward: 10
   productivityPenalty: 10
   stressReward: 0
   stressPenalty: 10
   isUrgent: 0
   canExpire: 1
+  senderName: Duke
+  senderEmail: duke@nigger.com
+  subject: I want to fk your moma
+  mailBody: sahfbasdsadsahdk hsakjdhjakjshdjakshdkahskdh ksahdkhsakjdhsadasd

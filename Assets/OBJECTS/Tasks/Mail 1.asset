@@ -16,10 +16,14 @@ MonoBehaviour:
   description: sahfbasdsadsahdk hsakjdhjakjshdjakshdkahskdh ksahdkhsawewejdhsad
   taskType: 0
   priority: 1
-  timeLimitMinutes: 10
+  timeLimitMinutes: 360
   productivityReward: 10
   productivityPenalty: 10
   stressReward: 0
   stressPenalty: 10
   isUrgent: 0
   canExpire: 0
+  senderName: wewe
+  senderEmail: wewe@gmail.com
+  subject: UWU
+  mailBody: nigger smigger
