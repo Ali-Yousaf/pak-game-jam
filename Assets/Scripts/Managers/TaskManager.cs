@@ -8,7 +8,7 @@ public class TaskManager : MonoBehaviour
     public class NotificationBadge
     {
         public GameObject badgeObject;
-        public TMP_Text countText;
+        public TextMeshProUGUI countText;
     }
 
 
@@ -20,8 +20,8 @@ public class TaskManager : MonoBehaviour
 
 
     [Header("Task Spawning")]
-    [SerializeField] private int minimumDelayMinutes = 2;
-    [SerializeField] private int maximumDelayMinutes = 5;
+    [SerializeField] private int minimumDelayMinutes = 10;
+    [SerializeField] private int maximumDelayMinutes = 30;
 
     [SerializeField] private int maximumActiveTasks = 3;
 
@@ -128,21 +128,10 @@ public class TaskManager : MonoBehaviour
 
     private void ScheduleNextTask()
     {
-        int delay = Random.Range(
-            minimumDelayMinutes,
-            maximumDelayMinutes + 1
-        );
-
-        int totalMinutes =
-            currentHour * 60 +
-            currentMinute +
-            delay;
-
-        nextTaskHour =
-            (totalMinutes / 60) % 24;
-
-        nextTaskMinute =
-            totalMinutes % 60;
+        int delay = Random.Range(minimumDelayMinutes, maximumDelayMinutes + 1);
+        int totalMinutes = currentHour * 60 + currentMinute + delay;
+        nextTaskHour = (totalMinutes / 60) % 24;
+        nextTaskMinute = totalMinutes % 60;
     }
 
 
@@ -276,19 +265,10 @@ public class TaskManager : MonoBehaviour
     }
 
 
-    private bool IsTimeReached(
-        int currentHour,
-        int currentMinute,
-        int targetHour,
-        int targetMinute)
+    private bool IsTimeReached(int currentHour, int currentMinute, int targetHour, int targetMinute)
     {
-        int currentTotal =
-            currentHour * 60 +
-            currentMinute;
-
-        int targetTotal =
-            targetHour * 60 +
-            targetMinute;
+        int currentTotal = currentHour * 60 + currentMinute;
+        int targetTotal = targetHour * 60 + targetMinute;
 
         return currentTotal >= targetTotal;
     }
@@ -296,13 +276,8 @@ public class TaskManager : MonoBehaviour
 
     private bool IsAfterWorkHours()
     {
-        int currentTotal =
-            currentHour * 60 +
-            currentMinute;
-
-        int endTotal =
-            workEndHour * 60 +
-            workEndMinute;
+        int currentTotal = currentHour * 60 + currentMinute;
+        int endTotal = workEndHour * 60 + workEndMinute;
 
         return currentTotal >= endTotal;
     }
@@ -362,25 +337,11 @@ public class TaskManager : MonoBehaviour
 
     private void UpdateNotificationBadges()
     {
-        UpdateBadge(
-            emailBadge,
-            emailCount
-        );
+        UpdateBadge(emailBadge, emailCount );
+        UpdateBadge(callBadge, callCount );
+        UpdateBadge(meetingBadge, meetingCount );
+        UpdateBadge(printBadge, printCount );
 
-        UpdateBadge(
-            callBadge,
-            callCount
-        );
-
-        UpdateBadge(
-            printBadge,
-            printCount
-        );
-
-        UpdateBadge(
-            meetingBadge,
-            meetingCount
-        );
     }
 
 
@@ -388,11 +349,8 @@ public class TaskManager : MonoBehaviour
         NotificationBadge badge,
         int count)
     {
-        if (badge == null ||
-            badge.badgeObject == null)
-        {
+        if (badge == null ||badge.badgeObject == null)
             return;
-        }
 
         if (badge.countText != null)
         {
@@ -400,9 +358,7 @@ public class TaskManager : MonoBehaviour
                 count.ToString();
         }
 
-        badge.badgeObject.SetActive(
-            count > 0
-        );
+        badge.badgeObject.SetActive(count > 0);
     }
 
 
