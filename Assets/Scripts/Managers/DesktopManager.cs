@@ -214,6 +214,22 @@ public class DesktopManager : MonoBehaviour
         }
     }
 
+    public void MinimizeAllApps()
+    {
+        foreach (GameObject window in openWindows.Values)
+        {
+            if (window == null)
+                continue;
+
+            AppWindow appWindow = window.GetComponent<AppWindow>();
+
+            if (appWindow != null && !appWindow.IsMinimized())
+            {
+                appWindow.MinimizeWindow();
+            }
+        }
+    }
+
 
     public void BringWindowToFront(GameObject window)
     {
