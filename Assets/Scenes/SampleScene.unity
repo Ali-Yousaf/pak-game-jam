@@ -1772,8 +1772,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -80, y: -80}
-  m_SizeDelta: {x: 467.6909, y: 89.9663}
+  m_AnchoredPosition: {x: -78.65503, y: -80}
+  m_SizeDelta: {x: 469.04, y: 89.9663}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &933511321
 MonoBehaviour:
@@ -1955,7 +1955,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NotificationPanel
   panel: {fileID: 933511320}
   titleText: {fileID: 1401879479}
-  descriptionText: {fileID: 0}
   taskTypeText: {fileID: 1258767125}
   animationDuration: 0.35
   displayDuration: 1.5
