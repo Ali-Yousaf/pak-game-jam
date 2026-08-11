@@ -1695,7 +1695,7 @@ MonoBehaviour:
   meetingTasks: []
   minimumDelayMinutes: 3
   maximumDelayMinutes: 4
-  maximumActiveTasks: 5
+  maximumActiveTasks: 2
   workStartHour: 9
   workStartMinute: 0
   workEndHour: 17
