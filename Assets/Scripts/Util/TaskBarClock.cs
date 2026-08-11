@@ -7,6 +7,9 @@ public class TaskBarClock : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private TextMeshProUGUI dateText;
 
+    [Header("Task System")]
+    [SerializeField] private TaskManager taskManager;
+
     [Header("Game Time")]
     [SerializeField] private int startHour = 9;
     [SerializeField] private int startMinute = 0;
@@ -39,6 +42,9 @@ public class TaskBarClock : MonoBehaviour
         currentYear = startYear;
 
         UpdateTimeText();
+
+        // Send initial time to TaskManager.
+        NotifyTaskManager();
     }
 
 
@@ -66,7 +72,45 @@ public class TaskBarClock : MonoBehaviour
             }
 
             UpdateTimeText();
+
+            // Tell TaskManager that the time changed.
+            NotifyTaskManager();
         }
+    }
+
+
+    public void SetCurrentTime(int hour, int minute)
+    {
+        currentHour = hour;
+        currentMinute = minute;
+
+        UpdateTimeText();
+
+        NotifyTaskManager();
+    }
+
+
+    private void NotifyTaskManager()
+    {
+        if (taskManager == null)
+            return;
+
+        taskManager.SetCurrentTime(
+            currentHour,
+            currentMinute
+        );
+    }
+
+
+    public int GetCurrentHour()
+    {
+        return currentHour;
+    }
+
+
+    public int GetCurrentMinute()
+    {
+        return currentMinute;
     }
 
 

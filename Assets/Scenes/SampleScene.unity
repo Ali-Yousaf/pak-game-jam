@@ -191,7 +191,6 @@ GameObject:
   m_Component:
   - component: {fileID: 147782988}
   - component: {fileID: 147782987}
-  - component: {fileID: 147782989}
   m_Layer: 0
   m_Name: DESKTOP MANAGER
   m_TagString: Untagged
@@ -232,26 +231,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &147782989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 147782986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3846fe556e9fb44b9cc84b4f2ba9c03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TaskBarClock
-  timeText: {fileID: 1236456802}
-  dateText: {fileID: 2016619527}
-  startHour: 9
-  startMinute: 0
-  startDay: 11
-  startMonth: 8
-  startYear: 2026
-  realSecondsPerGameMinute: 1
 --- !u!1 &353519280
 GameObject:
   m_ObjectHideFlags: 0
@@ -1597,7 +1576,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 801071554}
-  - component: {fileID: 801071553}
+  - component: {fileID: 801071555}
+  - component: {fileID: 801071556}
   m_Layer: 0
   m_Name: TASK MANAGER
   m_TagString: Untagged
@@ -1605,30 +1585,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &801071553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 801071552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b291696c3d8e084288a0766d88b9fd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TaskManager
-  emailBadge:
-    badgeObject: {fileID: 0}
-    countText: {fileID: 0}
-  callBadge:
-    badgeObject: {fileID: 0}
-    countText: {fileID: 0}
-  printBadge:
-    badgeObject: {fileID: 0}
-    countText: {fileID: 0}
-  meetingBadge:
-    badgeObject: {fileID: 0}
-    countText: {fileID: 0}
 --- !u!4 &801071554
 Transform:
   m_ObjectHideFlags: 0
@@ -1644,6 +1600,66 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &801071555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801071552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b291696c3d8e084288a0766d88b9fd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TaskManager
+  emailTasks:
+  - {fileID: 11400000, guid: bc20b1989297e56418701c0edd00d8e7, type: 2}
+  - {fileID: 11400000, guid: eb60ed0157f276740a6c5f4455b91fb5, type: 2}
+  callTasks:
+  - {fileID: 11400000, guid: 95f2aa2dc8514f74c8c789ecee8aa50f, type: 2}
+  printTasks:
+  - {fileID: 11400000, guid: e5f593e6fa0fbc542ae6871d719187ff, type: 2}
+  meetingTasks: []
+  minimumDelayMinutes: 3
+  maximumDelayMinutes: 4
+  maximumActiveTasks: 5
+  workStartHour: 9
+  workStartMinute: 0
+  workEndHour: 17
+  workEndMinute: 0
+  emailBadge:
+    badgeObject: {fileID: 966892337}
+    countText: {fileID: 535538636}
+  callBadge:
+    badgeObject: {fileID: 1491339746}
+    countText: {fileID: 1532613040}
+  printBadge:
+    badgeObject: {fileID: 615725953}
+    countText: {fileID: 735583647}
+  meetingBadge:
+    badgeObject: {fileID: 0}
+    countText: {fileID: 0}
+--- !u!114 &801071556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801071552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3846fe556e9fb44b9cc84b4f2ba9c03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TaskBarClock
+  timeText: {fileID: 1236456802}
+  dateText: {fileID: 2016619527}
+  taskManager: {fileID: 801071555}
+  startHour: 9
+  startMinute: 0
+  startDay: 11
+  startMonth: 8
+  startYear: 2026
+  realSecondsPerGameMinute: 1
 --- !u!1 &949334993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2215,7 +2231,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '10:42 AM
+  m_text: '9:00 AM
 
 '
   m_isRightToLeft: 0
